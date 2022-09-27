@@ -1,0 +1,23 @@
+version: '3.8'
+services:
+  currency-service:
+    container_name: currency-service
+    build:
+      context: .
+      dockerfile: ./Dockerfile
+    ports:
+      - "9099:9099"
+    expose:
+      - 9099
+    volumes:
+      - ./:/app/app
+    restart: unless-stopped
+    networks:
+      - rabbitmq_nodejs
+
+networks:
+  rabbitmq_nodejs:
+    name: rabbitmq_nodejs
+    driver: bridge
+  auth-network:
+    driver: bridge
