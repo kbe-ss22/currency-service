@@ -1,5 +1,7 @@
 package com.kbe.currencyservice.config;
 
+import com.kbe.currencyservice.domain.CurrencyCalculationUtils;
+import com.kbe.currencyservice.domain.CurrencyCalculationUtilsImpl;
 import org.springframework.amqp.core.*;
 import org.springframework.amqp.rabbit.connection.ConnectionFactory;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
@@ -9,10 +11,9 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 @Configuration
-public class RabbitConfig {
+public class ApplicationConfig {
 
     public static final String EXCHANGEFORANSWERS = "currency-answer-exchange";
-
     public static final String QUEUEFORANSWERS = "currency-answer-queue";
     public static final String QUEUEFORREQUESTS = "currency-request-queue";
     public static final String ANSWERROUTINGKEY = "output.productservice";
@@ -35,6 +36,8 @@ public class RabbitConfig {
         return BindingBuilder.bind(answerQueue()).to(exchange).with(ANSWERROUTINGKEY);
     }
 
+    @Bean
+    public CurrencyCalculationUtils getCurrencyCalculationUtils(){return new CurrencyCalculationUtilsImpl();}
 
     @Bean
     public MessageConverter messageConverter(){
@@ -47,7 +50,4 @@ public class RabbitConfig {
         template.setMessageConverter(messageConverter());//template.setMessageConverter(converter); //template.setMessageConverter(messageConverter());
         return template;
     }
-
-
-
 }
