@@ -1,6 +1,6 @@
 package com.kbe.currencyservice.domain;
 
-import com.kbe.currencyservice.config.ApplicationConfig;
+import com.kbe.currencyservice.config.RabbitConfig;
 import com.kbe.currencyservice.entity.CurrencyRequest;
 import org.springframework.amqp.rabbit.annotation.RabbitListener;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
@@ -16,7 +16,7 @@ public class CurrencyServiceController {
     @Autowired
     private CurrencyCalculationUtils currencyCalculationUtils;
 
-    @RabbitListener(queues = ApplicationConfig.QUEUEFORREQUESTS)
+    @RabbitListener(queues = RabbitConfig.QUEUEFORREQUESTS)
     private double receiveRequest(CurrencyRequest requestCall){
         return currencyCalculationUtils.convertEuroInGivenCurrency(requestCall.getPrice(), requestCall.getCurrency());
     }
